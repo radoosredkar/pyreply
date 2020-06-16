@@ -1,1 +1,4 @@
 gitrepl/*
+gitrepl/*
+__pycache__*
+build/*
