@@ -17,7 +17,8 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-path_exists = os.path.exists(os.path.expanduser(args.repo))
+if args.repo and args.hash:
+    path_exists = os.path.exists(os.path.expanduser(args.repo))
 
 if args.repo and args.hash and path_exists:
     try:
