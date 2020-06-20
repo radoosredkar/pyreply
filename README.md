@@ -1,6 +1,9 @@
-# pyreply V0.2
+# pyreply V0.3
 Create script to repat last n commits
 Using GitPython library
+
+Either use gitreply.py script from the master or use standalone dist/gitreply.sh from the
+standalone_lib branch
 
 Usage:
 1. set repository path and hash arguments:
@@ -12,8 +15,3 @@ Usage:
 3. Run: python3 gitreply.py > reply.sh
 4. Reset to last_hast
 5. Run reply.sh if needed
-
-TODO:
-- Add filtering by user
-- Add Create standalone lib
-- Add Hash and repo poath checking
