@@ -1,4 +1,4 @@
-# pyreply V0.3
+# pyreply V0.3.1
 Create script to repat last n commits
 Using GitPython library
 
