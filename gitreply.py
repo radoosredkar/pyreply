@@ -22,35 +22,40 @@ def create_documentation():
 
 
 def read_arguments(container):
-    args = parser.parse_args()
+    args = container.parse_args()
     return (args.repo, args.hash)
 
 
-parser = create_documentation()
-git_repo, git_hash = read_arguments(parser)
+def main():
+    parser = create_documentation()
+    git_repo, git_hash = read_arguments(parser)
 
-if git_repo and git_hash:
-    path_exists = os.path.exists(os.path.expanduser(git_repo))
+    if git_repo and git_hash:
+        path_exists = os.path.exists(os.path.expanduser(git_repo))
 
-if git_repo and git_hash and path_exists:
-    try:
-        repo: Repo = Repo(git_repo)
-        all_commits = list(
-            itertools.takewhile(
-                lambda x: repo.git.rev_parse(x, short=7) != git_hash,
-                repo.iter_commits(),
+    if git_repo and git_hash and path_exists:
+        try:
+            repo: Repo = Repo(git_repo)
+            all_commits = list(
+                itertools.takewhile(
+                    lambda x: repo.git.rev_parse(x, short=7) != git_hash,
+                    repo.iter_commits(),
+                )
             )
-        )
-        all_commits.reverse()
-        print("git reset")
-        for commit in all_commits:
-            files = commit.stats.files
-            for file in files:
-                cmd_add = f"git add {file}"
-                print(cmd_add)
-            cmd_commit = f'git commit -m "{commit.message}"'
-            print(cmd_commit)
-    except InvalidGitRepositoryError as e:
-        print(f"Invalid git repository in folder {git_repo}")
-else:
-    parser.print_help()
+            all_commits.reverse()
+            print("git reset")
+            for commit in all_commits:
+                files = commit.stats.files
+                for file in files:
+                    cmd_add = f"git add {file}"
+                    print(cmd_add)
+                cmd_commit = f'git commit -m "{commit.message}"'
+                print(cmd_commit)
+        except InvalidGitRepositoryError as e:
+            print(f"Invalid git repository in folder {git_repo}")
+    else:
+        parser.print_help()
+
+
+if __name__ == "__main__":
+    main()
