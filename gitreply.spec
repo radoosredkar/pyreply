@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['gitreply.py'],
-             pathex=['/home/rado/software/python3/gitreplay'],
+             pathex=['/home/runner/work/pyreply/pyreply'],
              binaries=[],
              datas=[],
              hiddenimports=[],
