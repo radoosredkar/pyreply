@@ -1,17 +1,37 @@
-on:
-  push:
-
-- uses: EndBug/add-and-commit@v4 # You can change this to use a specific version
-  with:
-    add: '.'
-    message: 'build'
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-  tag: 'v0.5'
+on: push
 
 name: Create Release
 
 jobs:
+  build:
+    name: Greeting
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        build.sh
+	run:
+    name: Commit
+    runs-on: ubuntu-latest
+		steps:
+    - uses: EndBug/add-and-commit@v4 # You can change this to use a specific version
+      with:
+        add: '.'
+        message: 'build'
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+  tag: 'v0.5'
+
   build:
     name: Create Release
     runs-on: ubuntu-latest
