@@ -29,8 +29,8 @@ jobs:
     - name: Checkout code for release
       uses: actions/checkout@v2
     - name: Create release
-      	id: create_release
-      	uses: actions/create_release@v1
+      id: create_release
+      uses: actions/create_release@v1
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
   tag: 'v0.5'
