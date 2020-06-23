@@ -4,7 +4,7 @@ name: Create Release
 
 jobs:
   build:
-    name: Greeting
+    name: Add new release
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,35 +20,17 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         build.sh
-	run:
-    name: Commit
-    runs-on: ubuntu-latest
-		steps:
-    - uses: EndBug/add-and-commit@v4 # You can change this to use a specific version
+    - name: Commit new standalone lib
+      uses: EndBug/add-and-commit@v4
       with:
-        add: '.'
-        message: 'build'
+        message: "Standalone lib"
+        add: "."
+        tag: "v0.5"
+    - name: Checkout code for release
+      	uses: actions/checkout@v2
+    - name: Create release
+      	id: create_release
+      	uses: actions/create_release@v1
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
   tag: 'v0.5'
-
-  build:
-    name: Create Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: false
-          prerelease: false
