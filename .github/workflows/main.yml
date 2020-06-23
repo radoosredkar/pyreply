@@ -27,7 +27,7 @@ jobs:
         add: "."
         tag: "v0.5"
     - name: Checkout code for release
-      	uses: actions/checkout@v2
+      uses: actions/checkout@v2
     - name: Create release
       	id: create_release
       	uses: actions/create_release@v1
