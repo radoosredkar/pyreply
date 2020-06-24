@@ -1,1 +1,1 @@
-./gitrepl/bin/pyinstaller --onefile gitreply.py
+pyinstaller --onefile gitreply.py
