@@ -1,15 +1,14 @@
-name: Greet Everyone
-# This workflow is triggered on pushes to the repository.
-on: [push]
+on: push
+
+name: Create Release
+
 jobs:
   build:
-    # Job name is Greeting
-    name: Greeting
-    # This job runs on Linux
+    name: Add new release
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.8]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -20,4 +19,23 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        build.sh
+        ./build.sh
+    - name: Commit new standalone lib
+      uses: EndBug/add-and-commit@v4
+      with:
+        message: "Standalone lib"
+        add: "."
+        tag: "v0.5"
+    - name: Checkout code for release
+      uses: actions/checkout@v2
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+          tag_name: ${{ github.ref }}
+          release_name: Release V0.6
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token      
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+  tag: 'v0.6'
